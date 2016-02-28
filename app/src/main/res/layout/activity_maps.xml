@@ -99,6 +99,6 @@
         android:visibility="gone"
         app:layout_anchor="@id/bottom_sheet"
         app:layout_anchorGravity="top|right|end"
-        app:layout_behavior="com.invers.parkingtest.tools.FloatingActionButtonBehavior"/>
+        app:layout_behavior="de.smeurer.kotlin_db_parking.tools.FloatingActionButtonBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

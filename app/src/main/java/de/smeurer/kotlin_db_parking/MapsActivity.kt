@@ -5,8 +5,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.FragmentActivity
+import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
-import com.britneykilla.parkingtest.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,7 +28,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
 
     var behavior: BottomSheetBehavior<LinearLayout>? = null
 
-    var bottomSheetState: BottomSheetState = BottomSheetState.hidden
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +38,27 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
 
         behavior = BottomSheetBehavior.from(bottom_sheet)
         behavior?.isHideable = true
+
+        behavior?.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // React to state change
+
+                Log.d("Test", "newState: $newState")
+                if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_SETTLING) {
+                    fab.show()
+                } else {
+                    fab.hide()
+                }
+
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    selectedMarker = null
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // React to dragging events
+            }
+        })
 
         fab.setOnClickListener {
             startDirectionsIntent()
@@ -150,7 +171,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         behavior?.state = BottomSheetBehavior.STATE_EXPANDED
-        bottomSheetState = BottomSheetState.visible
+        //        fab.show()
 
         selectedMarker = marker
 
@@ -173,7 +194,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
 
     override fun onMapClick(p0: LatLng?) {
         selectedMarker = null
-        bottomSheetState = BottomSheetState.hidden
+        fab.hide()
         behavior?.state = BottomSheetBehavior.STATE_HIDDEN
     }
 }

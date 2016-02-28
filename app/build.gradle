@@ -7,7 +7,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.invers.parkingtest"
+        applicationId "de.smeurer.kotlin_db_parking"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
